@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 import numpy as np
 import tensorflow as tf
@@ -14,9 +15,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--save_dir', type=str, default='save',
                        help='model directory to load stored checkpointed models from')
-    parser.add_argument('-n', type=int, default=200,
+    parser.add_argument('-n', type=int, default=800,
                        help='number of words to sample')
-    parser.add_argument('--prime', type=str, default=' ',
+    parser.add_argument('--prime', type=str, default='Once upon a time',
                        help='prime text')
     parser.add_argument('--pick', type=int, default=1,
                        help='1 = weighted pick, 2 = beam search pick')
@@ -36,7 +37,7 @@ def sample(args):
     with open(os.path.join(args.save_dir, 'config.pkl'), 'rb') as f:
         saved_args = cPickle.load(f)
     with open(os.path.join(args.save_dir, 'words_vocab.pkl'), 'rb') as f:
-        words, vocab = cPickle.load(f)
+        words, vocab = cPickle.load(f, encoding='utf_8')
     model = Model(saved_args, True)
     with tf.Session() as sess:
         tf.global_variables_initializer().run()

@@ -73,7 +73,7 @@ class TextLoader():
         self.vocab, self.words = self.build_vocab(x_text)
         self.vocab_size = len(self.words)
 
-        with open(vocab_file, 'wb') as f:
+        with open(vocab_file, 'ab') as f:
             cPickle.dump(self.words, f)
 
         #The same operation like this [self.vocab[word] for word in x_text]

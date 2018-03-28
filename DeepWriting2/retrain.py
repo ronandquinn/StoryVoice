@@ -62,7 +62,6 @@ def train(args):
     # check compatibility if training is continued from previously saved model
     if args.init_from is not None:
         # check if all necessary files exist
-
         assert os.path.isdir(args.init_from)," %s must be a path" % args.init_from
         assert os.path.isfile(os.path.join(args.init_from,"config.pkl")),"config.pkl file does not exist in path %s"%args.init_from
         assert os.path.isfile(os.path.join(args.init_from,"words_vocab.pkl")),"words_vocab.pkl.pkl file does not exist in path %s" % args.init_from
@@ -76,12 +75,6 @@ def train(args):
         need_be_same=["model","rnn_size","num_layers","seq_length"]
         for checkme in need_be_same:
             assert vars(saved_model_args)[checkme]==vars(args)[checkme],"Command line argument and saved model disagree on '%s' "%checkme
-        #
-        # # open saved vocab/dict and check if vocabs/dicts are compatible
-        # with open(os.path.join(args.init_from, 'words_vocab.pkl'), 'rb') as f:
-        #     saved_words, saved_vocab = cPickle.load(f)
-        # assert saved_words==data_loader.words, "Data and loaded model disagree on word set!"
-        # assert saved_vocab==data_loader.vocab, "Data and loaded model disagree on dictionary mappings!"
 
     with open(os.path.join(args.save_dir, 'config.pkl'), 'ab') as f:
         cPickle.dump(args, f)
@@ -100,17 +93,13 @@ def train(args):
         saver = tf.train.Saver(tf.global_variables())
         # restore model
         if args.init_from is not None:
-            print(tf.global_variables())
             saver.restore(sess, ckpt.model_checkpoint_path)
-            print(tf.global_variables())
         for e in range(model.epoch_pointer.eval(), args.num_epochs):
             sess.run(tf.assign(model.lr, args.learning_rate * (args.decay_rate ** e)))
             data_loader.reset_batch_pointer()
             state = sess.run(model.initial_state)
             speed = 0
-            if args.init_from is None:
-                assign_op = model.epoch_pointer.assign(e)
-                sess.run(assign_op)
+
             if args.init_from is not None:
                 data_loader.pointer = model.batch_pointer.eval()
                 args.init_from = None
