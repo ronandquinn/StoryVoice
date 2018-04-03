@@ -19,8 +19,6 @@ def main():
                        help='number of words to sample')
     parser.add_argument('--prime', type=str, default='Once upon a time',
                        help='prime text')
-    parser.add_argument('--pick', type=int, default=1,
-                       help='1 = weighted pick, 2 = beam search pick')
     parser.add_argument('--width', type=int, default=4,
                        help='width of the beam search')
     parser.add_argument('--sample', type=int, default=1,
@@ -47,7 +45,7 @@ def sample(args):
             saver.restore(sess, ckpt.model_checkpoint_path)
             for _ in range(args.count):
               x = open("new.txt", "w")
-              print(model.sample(sess, words, vocab, args.n, args.prime, args.sample, args.pick, args.width, args.quiet), file = x)
+              print(model.sample(sess, words, vocab, args.n, args.prime, args.sample, args.width, args.quiet), file = x)
 
 if __name__ == '__main__':
     main()
