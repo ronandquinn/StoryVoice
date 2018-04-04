@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+
+"""StoryVoice machine learning original story generation system"""
+"""UI handling for original story retrieval from the gcpInstance engine"""
+
 import aiy.audio
 import aiy.cloudspeech
 import aiy.voicehat
@@ -40,4 +44,3 @@ def new_story():
             sv = ('new.txt')
             save_story(sv)
             return
-

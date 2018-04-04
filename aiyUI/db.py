@@ -1,4 +1,8 @@
  #!/usr/bin/env python3
+
+"""StoryVoice machine learning original story generation system"""
+"""SQLite database UI management menu and supplemental system functions"""
+
 import aiy.audio
 import aiy.cloudspeech
 import aiy.voicehat
@@ -23,11 +27,14 @@ c = conn.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS stories (name TEXT, content TEXT)")
 conn.commit()
 
+# sets main global saved story variable to avoid overwriting
 def setS():
     global s
     s = how_many() + 1
     return s
 
+# main database management UI menu, prints options and inputs to screen
+# to eleviate possible hardware based, audio UI issues
 def manage():
     recognizer.expect_phrase('How many')
     recognizer.expect_phrase('delete')
@@ -67,6 +74,7 @@ def manage():
                 return
     return
 
+# checks saved story tracking variable to doublecheck against overwriting, creates new table if needed and saves
 def save_story(sv):
     global s
     setS()
@@ -88,6 +96,7 @@ def save_story(sv):
     s += 1
     return
 
+# queries SQLite db for requested saved story and sends to read if available
 def saved_story(story):
     a = text2int(story)
     name = ('story%s.txt' % a)
@@ -105,6 +114,7 @@ def saved_story(story):
         led.set_state(aiy.voicehat.LED.OFF)
     return
 
+# queries SQLite db for the number of currently saved stories
 def how_many():
     c.execute("CREATE TABLE IF NOT EXISTS stories (name TEXT, content TEXT)")
     conn.commit()
@@ -112,6 +122,7 @@ def how_many():
     m = len(c.fetchall())
     return m
 
+# deletes named story by removing record from SQLite table and removing from memory
 def delete():
     global s
     recognizer.expect_phrase('one')
@@ -148,6 +159,7 @@ def delete():
             s = setS() + 1
     return
 
+# clears database by dropping the table and clears directory of all txt files
 def clear():
     global s
     led.set_state(aiy.voicehat.LED.ON)
@@ -165,6 +177,6 @@ def clear():
     led.set_state(aiy.voicehat.LED.OFF)
     return
 
+# return to main UI menu
 def back():
-    return 
-
+    return

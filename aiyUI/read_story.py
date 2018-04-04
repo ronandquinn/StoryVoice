@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+
+"""StoryVoice machine learning original story generation system"""
+"""Main system UI menu"""
+
 import aiy.audio
 import aiy.cloudspeech
 import aiy.voicehat
@@ -12,6 +16,7 @@ from db import saved_story
 from db import manage
 from helper import end
 
+# menu prints options and inputs to screen to eleviate possible hardware based, audio UI issues
 def main():
     recognizer = aiy.cloudspeech.get_recognizer()
     recognizer.expect_phrase('new')
