@@ -2,10 +2,12 @@
 import aiy.audio
 import aiy.cloudspeech
 import aiy.voicehat
+import time
 import sqlite3
 import string
 import sys
 import os
+from pathlib import Path
 
 from helper import text2int
 from helper import read
@@ -21,7 +23,10 @@ c = conn.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS stories (name TEXT, content TEXT)")
 conn.commit()
 
-s = 1
+def setS():
+    global s
+    s = how_many() + 1
+    return s
 
 def manage():
     recognizer.expect_phrase('How many')
@@ -31,8 +36,10 @@ def manage():
 
     while True:
         led.set_state(aiy.voicehat.LED.ON)
-        aiy.audio.say('Would you like to know how many you have, delete a story, clear the list, or go back')
-        print('How many, delete, clear or go back?')
+        time.sleep(1)
+        aiy.audio.say('Would you like to know how many stories you have, delete a story, clear the list or go back?')
+        print('Would you like to know how many stories you have, delete a story, clear the list or go back?')
+        print('Please answer "how many", "delete", "clear" or "go back"')
         led.set_state(aiy.voicehat.LED.OFF)
         print('Listening...')
         led.set_state(aiy.voicehat.LED.BLINK)
@@ -45,10 +52,10 @@ def manage():
         else:
             print('You said "', text, '"')
             if 'many' in text:
-                how_many()
+                m = how_many()
                 led.set_state(aiy.voicehat.LED.ON)
                 aiy.audio.say("You have %s saved stories" % m)
-                led.set_state(aiy.voicehat.LED.ON)
+                led.set_state(aiy.voicehat.LED.OFF)
                 return
             elif 'delete' in text:
                 delete()
@@ -62,6 +69,10 @@ def manage():
 
 def save_story(sv):
     global s
+    setS()
+    e = Path("/home/pi/AIY-voice-kit-python/src/examples/voice/StoryVoice/story%s.txt" % s)
+    if e.exists():
+        s += 1
     led.set_state(aiy.voicehat.LED.ON)
     aiy.audio.say("OK, saving as story number%s" % s)
     led.set_state(aiy.voicehat.LED.OFF)
@@ -102,6 +113,7 @@ def how_many():
     return m
 
 def delete():
+    global s
     recognizer.expect_phrase('one')
     recognizer.expect_phrase('two')
     recognizer.expect_phrase('three')
@@ -109,6 +121,7 @@ def delete():
     recognizer.expect_phrase('five')
     led.set_state(aiy.voicehat.LED.ON)
     aiy.audio.say('OK, tell me the number of the story you want to delete?')
+    print('Please answer with the number only')
     led.set_state(aiy.voicehat.LED.OFF)
     print('Listening...')
     led.set_state(aiy.voicehat.LED.BLINK)
@@ -127,9 +140,12 @@ def delete():
         led.set_state(aiy.voicehat.LED.OFF)
         c.execute("DELETE FROM stories WHERE name = ?", (name,))
         conn.commit()
+        os.remove(name)
         led.set_state(aiy.voicehat.LED.ON)
         aiy.audio.say("Story number %s deleted" % a)
         led.set_state(aiy.voicehat.LED.OFF)
+        if a < how_many():
+            s = setS() + 1
     return
 
 def clear():
@@ -139,6 +155,10 @@ def clear():
     led.set_state(aiy.voicehat.LED.OFF)
     c.executescript('DROP TABLE IF EXISTS stories;')
     conn.commit()
+    path = '/home/pi/AIY-voice-kit-python/src/examples/voice/StoryVoice'
+    for file in os.listdir(path):
+        if file.endswith(".txt"):
+            os.remove(file)
     s = 1
     led.set_state(aiy.voicehat.LED.ON)
     aiy.audio.say("Ok, all stories have been deleted")

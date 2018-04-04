@@ -57,4 +57,5 @@ def end():
     led.set_state(aiy.voicehat.LED.ON)
     aiy.audio.say('Ok, goodbye!')
     led.set_state(aiy.voicehat.LED.OFF)
+    led.set_state(aiy.voicehat.LED.OFF)
     exit()

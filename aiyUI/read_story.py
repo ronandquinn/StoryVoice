@@ -2,6 +2,7 @@
 import aiy.audio
 import aiy.cloudspeech
 import aiy.voicehat
+import time
 import string
 import os
 import sys
@@ -29,8 +30,10 @@ def main():
         print('Press the button and speak')
         button.wait_for_press()
         led.set_state(aiy.voicehat.LED.ON)
-        aiy.audio.say('Would you like a new story, old story, to manage your stories, or quit ')
-        print('New, old, manage or quit?')
+        time.sleep(1)
+        aiy.audio.say('Would you like a new story, old story, to manage your stories, or quit?')
+        print('Would you like a new story, old story, to manage your stories, or quit? ')
+        print('Please answer "new", "old", "manage" or "quit"')
         led.set_state(aiy.voicehat.LED.OFF)
         print('Listening...')
         led.set_state(aiy.voicehat.LED.BLINK)
@@ -50,7 +53,8 @@ def main():
                 new_story()
             elif 'old' in text:
                 led.set_state(aiy.voicehat.LED.ON)
-                aiy.audio.say('OK, just say the number of the story you want to hear?')
+                aiy.audio.say('OK, tell me the number of the story you want to hear?')
+                print('Please answer with the number only')
                 led.set_state(aiy.voicehat.LED.OFF)
                 print('Listening...')
                 led.set_state(aiy.voicehat.LED.BLINK)
@@ -61,9 +65,9 @@ def main():
                     aiy.audio.say('Sorry, I did not hear you.')
                     led.set_state(aiy.voicehat.LED.OFF)
                 else:
-                    print('You said " Story number ', story, '"')
+                    print('You said " number', story, '"')
                     led.set_state(aiy.voicehat.LED.ON)
-                    aiy.audio.say('OK, I will look it up, it will just take a minute')
+                    aiy.audio.say('OK, I will look up story number "' + story + '", it will just take a minute')
                     led.set_state(aiy.voicehat.LED.OFF)
                     saved_story(story)
             elif 'manage' in text:
