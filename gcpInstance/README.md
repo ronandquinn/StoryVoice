@@ -6,7 +6,7 @@ gcpInstance contains a model called DeepWriting, based on code, called word-rnn-
 and is Copyright (c) 2015 Sherjil Ozair https://github.com/hunkim/word-rnn-tensorflow see included LICENSE.md
 
 DeepWriting is installed to a powerful Google Cloud instance to train on the dataset
-The dataset is a cleaned, appended text file of the Facebook "Childrens Book Test" dataset
+The dataset is a cleaned, appended text file of the Facebook "Children's Book Test" dataset
 This dataset is a 1.7GB compendium of classic children's literature, drawn from the open source,
 volunteer lead Gutenburg Project https://www.gutenberg.org
 
