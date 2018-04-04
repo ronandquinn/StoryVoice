@@ -13,3 +13,5 @@ aiyUI is launched by opening a terminal on the AIY, navigating to the path noted
 
 The UI is audio based, and offers newly generated stories, story saving option, retrieval of previously saved stories
 and SQLite database management options
+
+Requires Google Cloud Platform project and gcloud sdk installation
