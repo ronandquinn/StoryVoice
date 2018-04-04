@@ -14,7 +14,7 @@ punct=["'", "`", "-", "*", "[", "]", "(", ")", '"']
 button = aiy.voicehat.get_button()
 led = aiy.voicehat.get_led()
 
-# converts spoken numbr words, to int for db processing
+# converts spoken number words, to int for db processing
 def text2int(textnum, numwords={}):
     if not numwords:
       units = [
