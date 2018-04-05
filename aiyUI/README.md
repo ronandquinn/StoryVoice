@@ -15,3 +15,5 @@ The UI is audio based, and offers newly generated stories, story saving option, 
 and SQLite database management options
 
 Requires Google Cloud Platform project and gcloud sdk installation
+
+FYI - aiyUI tests cannot be run before installation on AIY 
