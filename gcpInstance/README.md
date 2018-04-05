@@ -20,4 +20,5 @@ to make it available for the aiyUI installed code
 
 Not included in the directory is the saved, trained model files. This is due to the huge file size of the TensorFlow
 training output. The saved, trained model files, are installed on the project's  live GC instance, at ronanq@story-creator.
+
 The model can be made available for download, on request, from a suitable file sharing platform
