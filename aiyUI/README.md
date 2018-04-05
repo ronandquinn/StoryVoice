@@ -9,9 +9,9 @@ gcpInstance, and for moving the generated story back to the AIY
 
 aiyUI is launched by opening a terminal on the AIY, navigating to the path noted above, and entering:
 
-'''python
+```python
 python3 read_story.py
-'''
+```
 
 The UI is audio based, and offers newly generated stories, story saving option, retrieval of previously saved stories
 and SQLite database management options
